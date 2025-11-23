@@ -26,10 +26,11 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const user = await login({ email, password });
+      await login({ email, password });
       router.push("/dashboard");
-    } catch (err: any) {
-      setError(err?.message || "Erro ao fazer login. Tente novamente.");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Erro ao fazer login. Tente novamente.";
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }

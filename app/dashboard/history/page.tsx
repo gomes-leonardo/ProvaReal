@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Card } from "@/components/ui/Card";
 import { HistoryTable } from "@/components/dashboard/HistoryTable";
 import { ResultCard } from "@/components/dashboard/ResultCard";
@@ -23,11 +23,7 @@ export default function HistoryPage() {
   const [filter, setFilter] = useState<"all" | "REAL" | "SINTETICA">("all");
   const pageSize = 20;
 
-  useEffect(() => {
-    loadHistory();
-  }, [page, filter]);
-
-  const loadHistory = async () => {
+  const loadHistory = useCallback(async () => {
     setIsLoading(true);
     try {
       const history = await getAnalysisHistory({ page, pageSize });
@@ -38,7 +34,11 @@ export default function HistoryPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [page, pageSize]);
+
+  useEffect(() => {
+    loadHistory();
+  }, [loadHistory]);
 
   const filteredAnalyses =
     filter === "all" ? analyses : analyses.filter((a) => a.label === filter);

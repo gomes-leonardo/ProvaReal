@@ -151,7 +151,7 @@ const FlowParticles: React.FC = () => {
     return pos;
   }, []);
 
-  useFrame((state) => {
+  useFrame((_state) => {
     if (particlesRef.current) {
       const positions = particlesRef.current.geometry.attributes.position
         .array as Float32Array;
@@ -187,8 +187,6 @@ const FlowParticles: React.FC = () => {
         transparent
         opacity={0.6}
         sizeAttenuation={true}
-        emissive={0x3b82f6}
-        emissiveIntensity={0.5}
       />
     </points>
   );

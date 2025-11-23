@@ -122,8 +122,9 @@ export default function ProfilePage() {
         newPassword: "",
         confirmPassword: "",
       }));
-    } catch (err: any) {
-      setError(err?.message || "Erro ao atualizar perfil. Tente novamente.");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Erro ao atualizar perfil. Tente novamente.";
+      setError(errorMessage);
     } finally {
       setIsSaving(false);
     }
@@ -136,8 +137,9 @@ export default function ProfilePage() {
     try {
       await deleteAccount();
       router.push("/");
-    } catch (err: any) {
-      setError(err?.message || "Erro ao deletar conta. Tente novamente.");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Erro ao deletar conta. Tente novamente.";
+      setError(errorMessage);
       setIsDeleting(false);
     }
   };
@@ -152,8 +154,9 @@ export default function ProfilePage() {
       await refreshUser();
       setSuccess("Plano atualizado com sucesso!");
       setShowPlanModal(false);
-    } catch (err: any) {
-      setError(err?.message || "Erro ao atualizar plano. Tente novamente.");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Erro ao atualizar plano. Tente novamente.";
+      setError(errorMessage);
     } finally {
       setIsUpdatingPlan(false);
     }
@@ -168,8 +171,9 @@ export default function ProfilePage() {
       await refreshUser();
       setSuccess("Inscrição cancelada. Você voltou para o plano FREE.");
       setShowCancelModal(false);
-    } catch (err: any) {
-      setError(err?.message || "Erro ao cancelar inscrição. Tente novamente.");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Erro ao cancelar inscrição. Tente novamente.";
+      setError(errorMessage);
       setIsCanceling(false);
     }
   };

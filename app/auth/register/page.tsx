@@ -40,14 +40,15 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      const user = await register({
+      await register({
         name,
         email,
         password,
       });
       router.push("/dashboard");
-    } catch (err: any) {
-      setError(err?.message || "Erro ao criar conta. Tente novamente.");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Erro ao criar conta. Tente novamente.";
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }

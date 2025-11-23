@@ -3,7 +3,6 @@
 import React, { useMemo, useEffect, useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { useAnalysisStore } from "@/store/useAnalysisStore";
-import { useAuthStore } from "@/store/useAuthStore";
 import { getAnalysisHistory } from "@/services/detectionService";
 import { BarChart3, CheckCircle2, XCircle, Clock } from "lucide-react";
 import { formatPercentage } from "@/lib/utils";
@@ -15,7 +14,6 @@ import { AnalysisResult } from "@/lib/types";
  */
 export const StatsCards: React.FC = () => {
   const { analyses } = useAnalysisStore();
-  const { user } = useAuthStore();
   const [allAnalyses, setAllAnalyses] = useState<AnalysisResult[]>(analyses);
 
   // Carregar todas as análises para estatísticas

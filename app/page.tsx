@@ -1,13 +1,8 @@
-import { useState } from "react";
 import Link from "next/link";
 import {
   Shield,
-  CheckCircle2,
   Upload,
   BarChart3,
-  Zap,
-  Lock,
-  ArrowRight,
   Check,
   Users,
   AlertCircle,

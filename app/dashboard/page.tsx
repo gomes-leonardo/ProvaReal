@@ -32,25 +32,22 @@ export default function DashboardPage() {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [selectedAnalysis, setSelectedAnalysis] =
     useState<AnalysisResult | null>(null);
-  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
-
-  // Carregar histórico ao montar componente
-  useEffect(() => {
-    loadHistory();
-    refreshUser();
-  }, []);
 
   const loadHistory = async () => {
-    setIsLoadingHistory(true);
     try {
       const history = await getAnalysisHistory({ page: 1, pageSize: 5 });
       setAnalyses(history.analyses);
     } catch (error) {
       console.error("Erro ao carregar histórico:", error);
-    } finally {
-      setIsLoadingHistory(false);
     }
   };
+
+  // Carregar histórico ao montar componente
+  useEffect(() => {
+    loadHistory();
+    refreshUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleFileSelect = (file: File) => {
     setSelectedFile(file);
@@ -75,10 +72,10 @@ export default function DashboardPage() {
       // Recarregar histórico e dados do usuário
       await loadHistory();
       await refreshUser();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Erro ao analisar imagem:", error);
       const errorMessage =
-        error.message || "Erro ao analisar imagem. Tente novamente.";
+        error instanceof Error ? error.message : "Erro ao analisar imagem. Tente novamente.";
       alert(errorMessage);
     } finally {
       setIsAnalyzing(false);
