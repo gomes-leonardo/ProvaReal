@@ -1,0 +1,52 @@
+{
+  "name": "provareal",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:prettier:check": "prettier --check .",
+    "lint:prettier:fix": "prettier --write .",
+    "lint:eslint:check": "eslint .",
+    "lint:eslint:fix": "eslint --fix .",
+    "services:up": "docker compose -f infra/compose.yaml up -d",
+    "services:down": "docker compose -f infra/compose.yaml down",
+    "services:logs": "docker compose -f infra/compose.yaml logs -f",
+    "services:ps": "docker compose -f infra/compose.yaml ps",
+    "services:restart": "docker compose -f infra/compose.yaml restart"
+  },
+  "dependencies": {
+    "@prisma/client": "^7.0.0",
+    "@react-three/drei": "^9.88.0",
+    "@react-three/fiber": "^8.15.0",
+    "axios": "^1.13.2",
+    "clsx": "^2.1.0",
+    "lucide-react": "^0.344.0",
+    "next": "^14.2.0",
+    "prisma": "^7.0.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "tailwind-merge": "^2.3.0",
+    "three": "^0.160.0",
+    "zustand": "^4.5.7"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.0",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^14.2.0",
+    "jest": "^30.2.0",
+    "postcss": "^8.4.0",
+    "prettier": "^3.2.0",
+    "tailwindcss": "^3.4.0",
+    "ts-jest": "^29.4.5",
+    "typescript": "^5.3.0"
+  }
+}
