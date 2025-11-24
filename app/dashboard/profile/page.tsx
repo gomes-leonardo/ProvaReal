@@ -192,28 +192,68 @@ export default function ProfilePage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-neutral-900 mb-2">Meu Perfil</h1>
-        <p className="text-neutral-600">
+        <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 mb-2">Meu Perfil</h1>
+        <p className="text-sm sm:text-base text-neutral-600">
           Gerencie suas informações pessoais e configurações da conta
         </p>
       </div>
 
+      {/* Plano Atual e Uso */}
+      <Card className="bg-gradient-to-r from-primary-50 to-primary-100 border-primary-200">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <p className="text-sm font-medium text-neutral-700 mb-1">
+              Seu plano atual
+            </p>
+            <p className="text-2xl font-bold text-primary-700">
+              {user.plan?.name || "FREE"}
+            </p>
+          </div>
+          <div className="text-right sm:text-left">
+            <p className="text-sm font-medium text-neutral-700 mb-1">
+              Uso neste mês
+            </p>
+            <p className="text-xl font-semibold text-neutral-900">
+              {user.monthlyUsage || 0} de{" "}
+              {user.plan?.monthlyQuota === -1
+                ? "∞"
+                : user.plan?.monthlyQuota || 0}{" "}
+              análises
+            </p>
+            {user.plan?.monthlyQuota !== -1 && (
+              <div className="mt-2 w-full sm:w-48 bg-neutral-200 rounded-full h-2">
+                <div
+                  className="bg-primary-600 h-2 rounded-full transition-all"
+                  style={{
+                    width: `${Math.min(
+                      ((user.monthlyUsage || 0) / (user.plan?.monthlyQuota || 1)) *
+                        100,
+                      100
+                    )}%`,
+                  }}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      </Card>
+
       {/* Informações do Perfil */}
       <Card>
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
           <div className="flex items-center space-x-3">
-            <div className="w-16 h-16 rounded-full bg-primary-100 flex items-center justify-center">
-              <User className="text-primary-600" size={32} />
+            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0">
+              <User className="text-primary-600" size={24} />
             </div>
-            <div>
-              <h2 className="text-xl font-semibold text-neutral-900">
+            <div className="min-w-0">
+              <h2 className="text-lg sm:text-xl font-semibold text-neutral-900 truncate">
                 {user.name}
               </h2>
-              <p className="text-sm text-neutral-600">{user.email}</p>
+              <p className="text-xs sm:text-sm text-neutral-600 truncate">{user.email}</p>
             </div>
           </div>
           {!isEditing && (
-            <Button onClick={() => setIsEditing(true)} variant="outline">
+            <Button onClick={() => setIsEditing(true)} variant="outline" size="sm" className="w-full sm:w-auto">
               Editar Perfil
             </Button>
           )}
@@ -354,63 +394,30 @@ export default function ProfilePage() {
             <CreditCard className="text-primary-600" size={24} />
             <div>
               <h3 className="text-lg font-semibold text-neutral-900">
-                Plano e Assinatura
+                Gerenciar Plano
               </h3>
               <p className="text-sm text-neutral-600">
-                Gerencie seu plano atual e altere ou cancele sua assinatura
+                Altere seu plano ou cancele sua assinatura
               </p>
             </div>
           </div>
         </div>
 
-        <div className="space-y-4">
-          {/* Plano Atual */}
-          <div className="bg-primary-50 border border-primary-200 rounded-lg p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-neutral-700">
-                  Plano Atual
-                </p>
-                <p className="text-2xl font-bold text-primary-700 mt-1">
-                  {user.plan?.name || "FREE"}
-                </p>
-                <p className="text-sm text-neutral-600 mt-1">
-                  {user.plan?.monthlyQuota === -1
-                    ? "Análises ilimitadas"
-                    : `${user.plan?.monthlyQuota || 0} análises/mês`}
-                </p>
-              </div>
-              {user.plan?.id !== "free" && (
-                <div className="text-right">
-                  <p className="text-sm text-neutral-600">Uso mensal</p>
-                  <p className="text-lg font-semibold text-neutral-900">
-                    {user.monthlyUsage || 0} /{" "}
-                    {user.plan?.monthlyQuota === -1
-                      ? "∞"
-                      : user.plan?.monthlyQuota || 0}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Ações */}
-          <div className="flex flex-col sm:flex-row gap-3">
-            {!isFreePlan && (
-              <Button
-                variant="outline"
-                onClick={() => setShowCancelModal(true)}
-                className="border-warning-300 text-warning-600 hover:bg-warning-50"
-              >
-                <XCircle size={18} className="mr-2" />
-                Cancelar Assinatura
-              </Button>
-            )}
-            <Button variant="outline" onClick={() => setShowPlanModal(true)}>
-              <CreditCard size={18} className="mr-2" />
-              {isFreePlan ? "Fazer Upgrade" : "Alterar Plano"}
+        <div className="flex flex-col sm:flex-row gap-3">
+          {!isFreePlan && (
+            <Button
+              variant="outline"
+              onClick={() => setShowCancelModal(true)}
+              className="border-warning-300 text-warning-600 hover:bg-warning-50"
+            >
+              <XCircle size={18} className="mr-2" />
+              Cancelar Assinatura
             </Button>
-          </div>
+          )}
+          <Button variant="primary" onClick={() => setShowPlanModal(true)}>
+            <CreditCard size={18} className="mr-2" />
+            {isFreePlan ? "Fazer Upgrade" : "Alterar Plano"}
+          </Button>
         </div>
       </Card>
 
@@ -496,10 +503,10 @@ export default function ProfilePage() {
       <Modal
         isOpen={showPlanModal}
         onClose={() => !isUpdatingPlan && setShowPlanModal(false)}
-        title="Alterar Plano"
+        title="Escolha seu plano"
         size="lg"
       >
-        <div className="space-y-4">
+        <div className="space-y-6">
           {error && (
             <div className="bg-error-50 border border-error-200 text-error-700 px-4 py-3 rounded-lg text-sm">
               {error}
@@ -511,71 +518,292 @@ export default function ProfilePage() {
             </div>
           )}
 
-          <p className="text-sm text-neutral-600 mb-4">
-            Escolha um plano para alterar sua assinatura:
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {AVAILABLE_PLANS.map((plan) => {
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
+            {/* FREE - Neutro */}
+            {AVAILABLE_PLANS.filter((p) => p.id === "free").map((plan) => {
               const isCurrentPlan = user?.plan?.id === plan.id;
-              const isUnlimited = plan.monthlyQuota === -1;
+              const isDowngrade = user?.plan?.id !== "free" && plan.id === "free";
 
               return (
                 <div
                   key={plan.id}
-                  className={`border-2 rounded-lg p-4 transition-all ${
+                  className={`border rounded-lg p-6 transition-all bg-neutral-50 ${
                     isCurrentPlan
-                      ? "border-primary-500 bg-primary-50"
+                      ? "border-primary-300 bg-neutral-100"
                       : "border-neutral-200"
                   }`}
                 >
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold text-neutral-900">
-                      {plan.name}
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-lg font-semibold text-neutral-900">
+                      Free
                     </h4>
                     {isCurrentPlan && (
-                      <span className="text-xs bg-primary-600 text-white px-2 py-1 rounded">
-                        Atual
+                      <span className="text-xs bg-primary-600 text-white px-2 py-1 rounded font-medium">
+                        Plano atual
                       </span>
                     )}
                   </div>
-                  <p className="text-2xl font-bold text-neutral-900 mb-1">
-                    {plan.price === 0
-                      ? "Grátis"
-                      : `R$ ${plan.price.toFixed(2)}`}
-                    {plan.price > 0 && (
-                      <span className="text-sm font-normal text-neutral-500">
-                        /mês
-                      </span>
-                    )}
+                  <p className="text-3xl font-bold text-neutral-900 mb-2">
+                    Grátis
                   </p>
-                  <p className="text-xs text-neutral-600 mb-3">
-                    {isUnlimited
-                      ? "Ilimitado"
-                      : `${plan.monthlyQuota} análises/mês`}
+                  <p className="text-sm text-neutral-600 mb-4">
+                    {plan.monthlyQuota} análises/mês
                   </p>
-                  <ul className="space-y-1 text-xs text-neutral-600">
-                    {plan.features.slice(0, 3).map((feature, idx) => (
-                      <li key={idx} className="flex items-start">
-                        <Check
-                          size={14}
-                          className="text-primary-600 mr-1 flex-shrink-0 mt-0.5"
-                        />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
+                  <ul className="space-y-2 text-sm text-neutral-600 mb-4">
+                    <li className="flex items-start">
+                      <Check
+                        size={16}
+                        className="text-neutral-400 mr-2 flex-shrink-0 mt-0.5"
+                      />
+                      <span>Ideal para uso pessoal e testes</span>
+                    </li>
+                    <li className="flex items-start">
+                      <Check
+                        size={16}
+                        className="text-neutral-400 mr-2 flex-shrink-0 mt-0.5"
+                      />
+                      <span>Limite de {plan.monthlyQuota} análises por mês</span>
+                    </li>
+                    <li className="flex items-start">
+                      <Check
+                        size={16}
+                        className="text-neutral-400 mr-2 flex-shrink-0 mt-0.5"
+                      />
+                      <span>Histórico limitado</span>
+                    </li>
                   </ul>
-                  {!isCurrentPlan && (
+                  <p className="text-xs text-neutral-500 mb-4 italic">
+                    Perfeito para começar a usar o ProvaReal antes de evoluir para o Pro.
+                  </p>
+                  {isCurrentPlan ? (
                     <Button
-                      variant={plan.id === "free" ? "outline" : "primary"}
+                      variant="outline"
                       size="sm"
-                      className="w-full mt-3"
+                      className="w-full"
+                      disabled
+                    >
+                      Plano atual
+                    </Button>
+                  ) : isDowngrade ? (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="w-full text-neutral-600"
                       onClick={() => handleUpdatePlan(plan.id)}
                       disabled={isUpdatingPlan}
                     >
-                      {plan.id === "free"
-                        ? "Voltar para FREE"
-                        : "Escolher Plano"}
+                      Mudar para Free
+                    </Button>
+                  ) : null}
+                </div>
+              );
+            })}
+
+            {/* PRO - Destacado */}
+            {AVAILABLE_PLANS.filter((p) => p.id === "pro").map((plan) => {
+              const isCurrentPlan = user?.plan?.id === plan.id;
+              const isUpgrade = user?.plan?.id !== "pro";
+
+              return (
+                <div
+                  key={plan.id}
+                  className={`border-2 rounded-lg p-6 transition-all relative ${
+                    isCurrentPlan
+                      ? "border-primary-500 bg-primary-50 shadow-lg"
+                      : "border-primary-500 bg-white shadow-lg scale-105"
+                  }`}
+                >
+                  {!isCurrentPlan && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                      <span className="bg-primary-600 text-white text-xs font-bold px-3 py-1 rounded-full">
+                        Mais Popular
+                      </span>
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-lg font-semibold text-primary-900">
+                      Pro
+                    </h4>
+                    {isCurrentPlan && (
+                      <span className="text-xs bg-primary-600 text-white px-2 py-1 rounded font-medium">
+                        Plano atual
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-3xl font-bold text-primary-700 mb-2">
+                    R$ {plan.price.toFixed(2).replace(".", ",")}
+                    <span className="text-sm font-normal text-neutral-500">
+                      /mês
+                    </span>
+                  </p>
+                  <p className="text-sm text-neutral-600 mb-4">
+                    {plan.monthlyQuota} análises/mês
+                  </p>
+                  <ul className="space-y-2 text-sm text-neutral-700 mb-4">
+                    <li className="flex items-start">
+                      <Check
+                        size={16}
+                        className="text-primary-600 mr-2 flex-shrink-0 mt-0.5"
+                      />
+                      <span>Para criadores, jornalistas e equipes pequenas</span>
+                    </li>
+                    <li className="flex items-start">
+                      <Check
+                        size={16}
+                        className="text-primary-600 mr-2 flex-shrink-0 mt-0.5"
+                      />
+                      <span>{plan.monthlyQuota} análises por mês</span>
+                    </li>
+                    <li className="flex items-start">
+                      <Check
+                        size={16}
+                        className="text-primary-600 mr-2 flex-shrink-0 mt-0.5"
+                      />
+                      <span>Detecção avançada com mais precisão</span>
+                    </li>
+                    <li className="flex items-start">
+                      <Check
+                        size={16}
+                        className="text-primary-600 mr-2 flex-shrink-0 mt-0.5"
+                      />
+                      <span>Histórico ilimitado</span>
+                    </li>
+                    <li className="flex items-start">
+                      <Check
+                        size={16}
+                        className="text-primary-600 mr-2 flex-shrink-0 mt-0.5"
+                      />
+                      <span>Suporte prioritário</span>
+                    </li>
+                    <li className="flex items-start">
+                      <Check
+                        size={16}
+                        className="text-primary-600 mr-2 flex-shrink-0 mt-0.5"
+                      />
+                      <span>Acesso à API para automação</span>
+                    </li>
+                  </ul>
+                  {isCurrentPlan ? (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full"
+                      disabled
+                    >
+                      Plano atual
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      className="w-full"
+                      onClick={() => handleUpdatePlan(plan.id)}
+                      disabled={isUpdatingPlan}
+                    >
+                      {isUpgrade ? "Atualizar para Pro" : "Assinar Pro"}
+                    </Button>
+                  )}
+                </div>
+              );
+            })}
+
+            {/* PREMIUM - Aspiracional */}
+            {AVAILABLE_PLANS.filter((p) => p.id === "premium").map((plan) => {
+              const isCurrentPlan = user?.plan?.id === plan.id;
+              const isUpgrade = user?.plan?.id !== "premium";
+
+              return (
+                <div
+                  key={plan.id}
+                  className={`border-2 rounded-lg p-6 transition-all ${
+                    isCurrentPlan
+                      ? "border-primary-500 bg-primary-50 shadow-lg"
+                      : "border-neutral-300 bg-white"
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-lg font-semibold text-neutral-900">
+                      Premium
+                    </h4>
+                    {isCurrentPlan ? (
+                      <span className="text-xs bg-primary-600 text-white px-2 py-1 rounded font-medium">
+                        Plano atual
+                      </span>
+                    ) : (
+                      <span className="text-xs bg-neutral-600 text-white px-2 py-1 rounded font-medium">
+                        Para equipes
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-3xl font-bold text-neutral-900 mb-2">
+                    R$ {plan.price.toFixed(2).replace(".", ",")}
+                    <span className="text-sm font-normal text-neutral-500">
+                      /mês
+                    </span>
+                  </p>
+                  <p className="text-sm text-neutral-600 mb-4">Ilimitado</p>
+                  <ul className="space-y-2 text-sm text-neutral-700 mb-4">
+                    <li className="flex items-start">
+                      <Check
+                        size={16}
+                        className="text-primary-600 mr-2 flex-shrink-0 mt-0.5"
+                      />
+                      <span>Para redações, campanhas e operações críticas</span>
+                    </li>
+                    <li className="flex items-start">
+                      <Check
+                        size={16}
+                        className="text-primary-600 mr-2 flex-shrink-0 mt-0.5"
+                      />
+                      <span>Análises ilimitadas</span>
+                    </li>
+                    <li className="flex items-start">
+                      <Check
+                        size={16}
+                        className="text-primary-600 mr-2 flex-shrink-0 mt-0.5"
+                      />
+                      <span>Detecção em tempo real</span>
+                    </li>
+                    <li className="flex items-start">
+                      <Check
+                        size={16}
+                        className="text-primary-600 mr-2 flex-shrink-0 mt-0.5"
+                      />
+                      <span>Relatórios detalhados para auditoria</span>
+                    </li>
+                    <li className="flex items-start">
+                      <Check
+                        size={16}
+                        className="text-primary-600 mr-2 flex-shrink-0 mt-0.5"
+                      />
+                      <span>Gerente de conta dedicado</span>
+                    </li>
+                    <li className="flex items-start">
+                      <Check
+                        size={16}
+                        className="text-primary-600 mr-2 flex-shrink-0 mt-0.5"
+                      />
+                      <span>SLA garantido</span>
+                    </li>
+                  </ul>
+                  {isCurrentPlan ? (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full"
+                      disabled
+                    >
+                      Plano atual
+                    </Button>
+                  ) : (
+                    <Button
+                      variant={isUpgrade ? "primary" : "outline"}
+                      size="sm"
+                      className="w-full"
+                      onClick={() => handleUpdatePlan(plan.id)}
+                      disabled={isUpdatingPlan}
+                    >
+                      {isUpgrade ? "Atualizar para Premium" : "Assinar Premium"}
                     </Button>
                   )}
                 </div>

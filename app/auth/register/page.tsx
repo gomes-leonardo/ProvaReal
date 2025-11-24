@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Shield } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card } from "@/components/ui/Card";
@@ -59,11 +59,14 @@ export default function RegisterPage() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center space-x-2">
-            <Shield className="text-primary-700" size={40} />
-            <span className="text-3xl font-bold text-primary-900">
-              ProvaReal
-            </span>
+          <Link href="/" className="inline-block relative w-80 h-24">
+            <Image
+              src="/logo-full-transparent.png"
+              alt="ProvaReal"
+              fill
+              className="object-contain"
+              priority
+            />
           </Link>
         </div>
 

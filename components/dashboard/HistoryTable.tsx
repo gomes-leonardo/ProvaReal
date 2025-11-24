@@ -1,8 +1,8 @@
 import React from "react";
+import Image from "next/image";
 import { AnalysisResult } from "@/lib/types";
 import { formatDate, formatPercentage } from "@/lib/utils";
-import { CheckCircle2, AlertTriangle } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { AlertTriangle } from "lucide-react";
 
 interface HistoryTableProps {
   analyses: AnalysisResult[];
@@ -19,81 +19,63 @@ export const HistoryTable: React.FC<HistoryTableProps> = ({
 }) => {
   if (analyses.length === 0) {
     return (
-      <div className="text-center py-12">
+      <div className="text-center py-12 bg-white rounded-xl border border-neutral-200">
         <p className="text-neutral-500">Nenhuma análise realizada ainda.</p>
       </div>
     );
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full">
-        <thead>
-          <tr className="border-b border-neutral-200">
-            <th className="text-left py-3 px-4 text-sm font-semibold text-neutral-700">
-              Data/Hora
-            </th>
-            <th className="text-left py-3 px-4 text-sm font-semibold text-neutral-700">
-              Arquivo
-            </th>
-            <th className="text-left py-3 px-4 text-sm font-semibold text-neutral-700">
-              Resultado
-            </th>
-            <th className="text-left py-3 px-4 text-sm font-semibold text-neutral-700">
-              Score
-            </th>
-            <th className="text-right py-3 px-4 text-sm font-semibold text-neutral-700">
-              Ações
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {analyses.map((analysis) => (
-            <tr
-              key={analysis.id}
-              className="border-b border-neutral-100 hover:bg-neutral-50 transition-colors"
-            >
-              <td className="py-3 px-4 text-sm text-neutral-600">
-                {formatDate(analysis.createdAt)}
-              </td>
-              <td className="py-3 px-4 text-sm text-neutral-900 font-medium">
-                {analysis.filename}
-              </td>
-              <td className="py-3 px-4">
-                <div className="flex items-center space-x-2">
-                  {analysis.label === "REAL" ? (
-                    <>
-                      <CheckCircle2 className="text-success-600" size={16} />
-                      <span className="text-sm text-neutral-900">Real</span>
-                    </>
-                  ) : (
-                    <>
-                      <AlertTriangle className="text-error-600" size={16} />
-                      <span className="text-sm text-neutral-900">
-                        Sintética
-                      </span>
-                    </>
-                  )}
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      {analyses.map((analysis) => {
+        const isReal = analysis.label === "REAL";
+        const scoreColor = isReal ? "text-green-600 bg-green-50 border-green-200" : "text-red-600 bg-red-50 border-red-200";
+
+        return (
+          <div
+            key={analysis.id}
+            className="bg-white border border-neutral-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow cursor-pointer group"
+            onClick={() => onViewDetails(analysis)}
+          >
+            {/* Thumbnail Area */}
+            <div className="relative h-32 w-full overflow-hidden">
+              {analysis.imageUrl ? (
+                <Image
+                  src={analysis.imageUrl}
+                  alt="Thumbnail"
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              ) : (
+                <div className="w-full h-full bg-neutral-100 flex items-center justify-center">
+                  <span className="text-neutral-400 text-xs">Sem imagem</span>
                 </div>
-              </td>
-              <td className="py-3 px-4">
-                <span className="text-sm font-medium text-neutral-900">
-                  {formatPercentage(analysis.score)}
+              )}
+              
+              {/* Score Badge */}
+              <div className={`absolute bottom-2 right-2 px-2 py-1 rounded-md text-xs font-bold border ${scoreColor}`}>
+                {formatPercentage(analysis.score)}
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="p-4">
+              <div className="flex items-start justify-between mb-2">
+                <h4 className="font-medium text-neutral-900 truncate flex-1" title={analysis.filename}>
+                  {analysis.filename}
+                </h4>
+              </div>
+              
+              <div className="flex items-center justify-between text-xs text-neutral-500">
+                <span>{formatDate(analysis.createdAt)}</span>
+                <span className={isReal ? "text-green-600 font-medium" : "text-red-600 font-medium"}>
+                  {isReal ? "Real" : "Sintética"}
                 </span>
-              </td>
-              <td className="py-3 px-4 text-right">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => onViewDetails(analysis)}
-                >
-                  Ver detalhes
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              </div>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };

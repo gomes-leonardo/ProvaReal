@@ -58,11 +58,11 @@ export const ResultCard: React.FC<ResultCardProps> = ({ result }) => {
   return (
     <Card className="space-y-6">
       <div className="flex items-start justify-between">
-        <div className="flex items-center space-x-3">
-          <Icon className={color} size={32} />
-          <div>
-            <h3 className={cn("text-2xl font-bold", color)}>{label}</h3>
-            <p className="text-sm text-neutral-500 mt-1">
+        <div className="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
+          <Icon className={cn(color, "flex-shrink-0")} size={24} />
+          <div className="min-w-0 flex-1">
+            <h3 className={cn("text-xl sm:text-2xl font-bold", color)}>{label}</h3>
+            <p className="text-xs sm:text-sm text-neutral-500 mt-1">
               Análise realizada em {formatDate(result.createdAt)}
             </p>
           </div>
@@ -86,7 +86,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({ result }) => {
             <span className="text-xs text-neutral-500">{result.filename}</span>
           </div>
           <div className="border border-neutral-200 rounded-lg overflow-hidden bg-neutral-50 shadow-sm">
-            <div className="relative w-full flex items-center justify-center min-h-[300px] max-h-[70vh] p-6">
+            <div className="relative w-full flex items-center justify-center min-h-[200px] sm:min-h-[300px] max-h-[70vh] p-4 sm:p-6">
               <img
                 src={result.imageUrl}
                 alt={`Imagem analisada: ${result.filename}`}

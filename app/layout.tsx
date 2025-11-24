@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "ProvaReal - Verificação de Imagens",
   description:
     "Verifique se uma imagem é real ou gerada por IA em segundos. Plataforma brasileira de combate à desinformação.",
+  icons: {
+    icon: "/logo-icon-transparent.png",
+  },
 };
 
 export default function RootLayout({

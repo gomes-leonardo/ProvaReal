@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, History, User, Shield, LogOut } from "lucide-react";
+import { LayoutDashboard, History, User, LogOut } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { logout } from "@/services/authService";
 import { useRouter } from "next/navigation";
@@ -67,15 +68,22 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed lg:sticky top-0 left-0 h-screen bg-white border-r border-neutral-200 z-50 transition-transform duration-300 ease-in-out",
+          "fixed top-0 left-0 h-screen bg-white border-r border-neutral-200 z-50 transition-transform duration-300 ease-in-out",
           "w-64 flex flex-col",
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
       >
-        {/* Logo */}
-        <div className="flex items-center space-x-3 px-6 py-6 border-b border-neutral-200">
-          <Shield className="text-primary-600" size={28} />
-          <span className="text-xl font-bold text-primary-900">ProvaReal</span>
+        <div className="flex items-center justify-center px-6 py-8 border-b border-neutral-200">
+          {/* Logo Icon - Visible on all screens now as per request */}
+          <div className="relative w-24 h-24">
+            <Image
+              src="/logo-icon-transparent.png"
+              alt="ProvaReal Logo"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
         </div>
 
         {/* Navegação */}
@@ -108,15 +116,22 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
 
         {/* Informações do usuário */}
         <div className="px-4 py-4 border-t border-neutral-200">
-          <div className="px-4 py-3 bg-neutral-50 rounded-lg mb-3">
-            <p className="text-sm font-medium text-neutral-900 truncate">
-              {user?.name}
-            </p>
-            <p className="text-xs text-neutral-500 truncate">{user?.email}</p>
+          <div className="bg-neutral-100 rounded-xl p-4 mb-3">
+            <div className="flex items-center space-x-3 mb-2">
+              <div className="w-8 h-8 rounded-full bg-neutral-200 flex items-center justify-center text-neutral-600 font-bold">
+                {user?.name?.charAt(0).toUpperCase()}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-neutral-900 truncate">
+                  {user?.name}
+                </p>
+                <p className="text-xs text-neutral-500 truncate">{user?.email}</p>
+              </div>
+            </div>
             {user?.plan && (
-              <p className="text-xs text-primary-600 mt-1">
+              <div className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded inline-block">
                 Plano: {user.plan.name}
-              </p>
+              </div>
             )}
           </div>
 
@@ -125,7 +140,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
             disabled={isLoggingOut}
             className={cn(
               "w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors",
-              "text-neutral-700 hover:bg-error-50 hover:text-error-600",
+              "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900",
               "disabled:opacity-50 disabled:cursor-not-allowed"
             )}
           >

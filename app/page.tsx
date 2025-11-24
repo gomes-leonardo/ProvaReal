@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import Image from "next/image";
 import {
   Shield,
   Upload,
@@ -9,6 +12,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { LandingUpload } from "@/components/landing/LandingUpload";
 
 /**
  * Landing page pública do ProvaReal
@@ -22,10 +26,14 @@ export default function HomePage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-2">
-              <Shield className="text-primary-700" size={32} />
-              <span className="text-2xl font-bold text-primary-900">
-                ProvaReal
-              </span>
+              <div className="relative w-40 h-12">
+                <Image
+                  src="/logo-full.png"
+                  alt="ProvaReal Logo"
+                  fill
+                  className="object-contain"
+                />
+              </div>
             </div>
             <Link href="/auth/login">
               <Button variant="outline" size="sm">
@@ -41,19 +49,30 @@ export default function HomePage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-neutral-900 mb-6">
-              Verifique se uma imagem é{" "}
-              <span className="text-primary-700">real ou gerada por IA</span> em
-              segundos
+              Saiba em segundos se uma imagem é{" "}
+              <span className="text-primary-700">real ou gerada por IA</span>
             </h1>
             <p className="text-xl text-neutral-600 mb-8">
-              Tecnologia avançada de análise de padrões para combater a
-              desinformação e garantir transparência nas eleições
+              Ferramenta brasileira de verificação de imagens para proteger você,
+              sua audiência e suas eleições contra desinformação.
             </p>
-            <Link href="/auth/register">
-              <Button size="lg" className="text-lg px-8 py-4">
-                Começar agora
-              </Button>
-            </Link>
+            
+            {/* Input de upload */}
+            <div className="mb-8">
+              <LandingUpload />
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Link href="/auth/register">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="text-lg px-8 py-4 w-full sm:w-auto"
+                >
+                  Criar conta
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -73,8 +92,8 @@ export default function HomePage() {
                 1. Envie a imagem
               </h3>
               <p className="text-neutral-600">
-                Faça upload da imagem que deseja verificar. Formatos suportados:
-                JPG, PNG, GIF, WEBP
+                Envie a imagem que você recebeu ou pretende publicar. Formatos
+                suportados: JPG, PNG, GIF, WEBP
               </p>
             </Card>
 
@@ -83,11 +102,11 @@ export default function HomePage() {
                 <BarChart3 className="text-primary-700" size={32} />
               </div>
               <h3 className="text-xl font-semibold text-neutral-900 mb-2">
-                2. Nós analisamos padrões invisíveis
+                2. Análise de padrões invisíveis
               </h3>
               <p className="text-neutral-600">
-                Nossa tecnologia examina gradientes, ruído e padrões
-                característicos de imagens reais vs sintéticas
+                Analisamos padrões invisíveis de gradiente, ruído e textura,
+                típicos de imagens reais ou geradas por IA.
               </p>
             </Card>
 
@@ -96,11 +115,11 @@ export default function HomePage() {
                 <Shield className="text-primary-700" size={32} />
               </div>
               <h3 className="text-xl font-semibold text-neutral-900 mb-2">
-                3. Você recebe um parecer com score de confiança
+                3. Parecer claro e objetivo
               </h3>
               <p className="text-neutral-600">
-                Receba um resultado claro com score de confiança e explicação
-                detalhada da análise
+                Você recebe um parecer claro com score de confiança e uma
+                explicação em linguagem simples.
               </p>
             </Card>
           </div>
@@ -120,10 +139,11 @@ export default function HomePage() {
                 price: "R$ 0,00",
                 quota: "10 análises/mês",
                 features: [
+                  "Perfeito para uso pessoal e testes",
                   "10 análises mensais",
                   "Detecção básica",
-                  "Histórico de 30 dias",
-                  "Suporte por email",
+                  "Histórico dos últimos 30 dias",
+                  "Suporte por e-mail",
                 ],
                 isPopular: false,
               },
@@ -132,11 +152,12 @@ export default function HomePage() {
                 price: "R$ 29,90",
                 quota: "200 análises/mês",
                 features: [
-                  "200 análises mensais",
-                  "Detecção avançada",
+                  "Para criadores, jornalistas e equipes pequenas",
+                  "200 análises por mês",
+                  "Detecção avançada com mais precisão",
                   "Histórico ilimitado",
                   "Suporte prioritário",
-                  "API Access",
+                  "Acesso à API para automação",
                 ],
                 isPopular: true,
               },
@@ -145,9 +166,10 @@ export default function HomePage() {
                 price: "R$ 99,90",
                 quota: "Ilimitado",
                 features: [
+                  "Para redações, campanhas e operações críticas",
                   "Análises ilimitadas",
                   "Detecção em tempo real",
-                  "Relatórios detalhados",
+                  "Relatórios detalhados para auditoria",
                   "Gerente de conta dedicado",
                   "SLA garantido",
                 ],
@@ -219,7 +241,8 @@ export default function HomePage() {
                 Jornalistas
               </h3>
               <p className="text-sm text-neutral-600">
-                Verifique imagens antes de publicar matérias e reportagens
+                Verifique imagens antes de publicar matérias e evite cair em
+                golpes visuais.
               </p>
             </Card>
 
@@ -229,7 +252,8 @@ export default function HomePage() {
                 Campanhas Eleitorais
               </h3>
               <p className="text-sm text-neutral-600">
-                Identifique conteúdo sintético usado em campanhas adversárias
+                Identifique conteúdos sintéticos usados contra sua candidatura e
+                se proteja de ataques desleais.
               </p>
             </Card>
 
@@ -239,7 +263,8 @@ export default function HomePage() {
                 Órgãos Públicos
               </h3>
               <p className="text-sm text-neutral-600">
-                Combata desinformação e garanta transparência nas comunicações
+                Monitore peças de comunicação e combata desinformação com uma
+                ferramenta de verificação confiável.
               </p>
             </Card>
 
@@ -250,7 +275,7 @@ export default function HomePage() {
               </h3>
               <p className="text-sm text-neutral-600">
                 Verifique imagens compartilhadas nas redes sociais antes de
-                compartilhar
+                compartilhar e evite espalhar desinformação.
               </p>
             </Card>
           </div>
@@ -291,8 +316,17 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <Shield className="text-primary-500" size={24} />
-                <span className="text-xl font-bold text-white">ProvaReal</span>
+                <div className="flex items-center gap-2 mb-4 md:mb-0">
+                  <div className="relative w-16 h-16">
+                    <Image
+                      src="/logo-icon-transparent.png"
+                      alt="ProvaReal"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                  <span className="font-bold text-xl text-white">ProvaReal</span>
+                </div>
               </div>
               <p className="text-sm">
                 Plataforma brasileira de verificação de imagens para combate à

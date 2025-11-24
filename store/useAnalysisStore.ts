@@ -3,14 +3,17 @@ import { AnalysisResult, AnalysisFilter } from "@/lib/types";
 
 interface AnalysisState {
   analyses: AnalysisResult[];
+  selectedImageForAnalysis: File | null;
   addAnalysis: (analysis: AnalysisResult) => void;
   setAnalyses: (analyses: AnalysisResult[]) => void;
+  setSelectedImageForAnalysis: (file: File | null) => void;
   clearHistory: () => void;
   getAnalysesByFilter: (filter: AnalysisFilter) => AnalysisResult[];
 }
 
 export const useAnalysisStore = create<AnalysisState>((set, get) => ({
   analyses: [],
+  selectedImageForAnalysis: null,
   addAnalysis: (analysis) => {
     set((state) => ({
       analyses: [analysis, ...state.analyses],
@@ -18,6 +21,9 @@ export const useAnalysisStore = create<AnalysisState>((set, get) => ({
   },
   setAnalyses: (analyses) => {
     set({ analyses });
+  },
+  setSelectedImageForAnalysis: (file) => {
+    set({ selectedImageForAnalysis: file });
   },
   clearHistory: () => {
     set({ analyses: [] });

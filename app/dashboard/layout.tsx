@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
@@ -57,7 +58,7 @@ export default function DashboardLayout({
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* Conteúdo principal */}
-      <div className="flex-1 flex flex-col lg:ml-0">
+      <div className="flex-1 flex flex-col lg:ml-64">
         {/* Navbar mobile */}
         <nav className="bg-white border-b border-neutral-200 sticky top-0 z-30 lg:hidden">
           <div className="flex items-center justify-between h-16 px-4">
@@ -69,9 +70,14 @@ export default function DashboardLayout({
             >
               {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
             </Button>
-            <span className="text-lg font-bold text-primary-900">
-              ProvaReal
-            </span>
+            <div className="relative w-8 h-8">
+              <Image
+                src="/logo-icon-transparent.png"
+                alt="ProvaReal"
+                fill
+                className="object-contain"
+              />
+            </div>
             <div className="w-10" /> {/* Spacer para centralizar */}
           </div>
         </nav>

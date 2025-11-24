@@ -2,16 +2,12 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
 import { UploadArea } from "@/components/dashboard/UploadArea";
 import { ResultCard } from "@/components/dashboard/ResultCard";
 import { HistoryTable } from "@/components/dashboard/HistoryTable";
 import { StatsCards } from "@/components/dashboard/StatsCards";
 import { ScoreGuide } from "@/components/dashboard/ScoreGuide";
-import {
-  AnalysisVisualizer3D,
-  AnalysisStatus,
-} from "@/components/three/AnalysisVisualizer3D";
+import { ScanningLoading } from "@/components/dashboard/ScanningLoading";
 import { Modal } from "@/components/ui/Modal";
 import { analyzeImage, getAnalysisHistory } from "@/services/detectionService";
 import { useAnalysisStore } from "@/store/useAnalysisStore";
@@ -25,13 +21,14 @@ import { useEffect, useState } from "react";
  * Permite upload de imagens, análise e visualização de histórico
  */
 export default function DashboardPage() {
-  const { analyses, addAnalysis, setAnalyses } = useAnalysisStore();
+  const { analyses, addAnalysis, setAnalyses, selectedImageForAnalysis, setSelectedImageForAnalysis } = useAnalysisStore();
   const { refreshUser } = useAuthStore();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [selectedAnalysis, setSelectedAnalysis] =
     useState<AnalysisResult | null>(null);
+  const [hasAutoAnalyzed, setHasAutoAnalyzed] = useState(false);
 
   const loadHistory = async () => {
     try {
@@ -49,6 +46,21 @@ export default function DashboardPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Detectar imagem pré-selecionada da landing page e iniciar análise automaticamente
+  useEffect(() => {
+    if (selectedImageForAnalysis && !hasAutoAnalyzed && !isAnalyzing) {
+      setSelectedFile(selectedImageForAnalysis);
+      setHasAutoAnalyzed(true);
+      // Limpar a imagem do store após usar
+      setSelectedImageForAnalysis(null);
+      // Iniciar análise automaticamente após um pequeno delay para garantir que o componente está pronto
+      setTimeout(() => {
+        handleAnalyzeWithFile(selectedImageForAnalysis);
+      }, 500);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedImageForAnalysis, hasAutoAnalyzed, isAnalyzing]);
+
   const handleFileSelect = (file: File) => {
     setSelectedFile(file);
     setResult(null); // Limpa resultado anterior
@@ -59,14 +71,24 @@ export default function DashboardPage() {
     setResult(null);
   };
 
-  const handleAnalyze = async () => {
-    if (!selectedFile) return;
-
+  const handleAnalyzeWithFile = async (file: File) => {
     setIsAnalyzing(true);
     setResult(null);
+    const startTime = Date.now();
 
     try {
-      const analysisResult = await analyzeImage(selectedFile);
+      const analysisResult = await analyzeImage(file);
+
+      // Garantir tempo mínimo de 5 segundos
+      const elapsed = Date.now() - startTime;
+      const minDuration = 5000; // 5 segundos
+      const remainingTime = Math.max(0, minDuration - elapsed);
+
+      if (remainingTime > 0) {
+        await new Promise((resolve) => setTimeout(resolve, remainingTime));
+      }
+
+      // Após garantir o tempo mínimo, exibir resultado
       setResult(analysisResult);
       addAnalysis(analysisResult);
       // Recarregar histórico e dados do usuário
@@ -82,16 +104,21 @@ export default function DashboardPage() {
     }
   };
 
+  const handleAnalyze = async () => {
+    if (!selectedFile) return;
+    await handleAnalyzeWithFile(selectedFile);
+  };
+
   const recentAnalyses = analyses.slice(0, 5); // Últimas 5 análises
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-12">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-neutral-900 mb-2">
+        <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 mb-2">
           Análise de Imagens
         </h1>
-        <p className="text-neutral-600">
+        <p className="text-sm sm:text-base text-neutral-600">
           Envie uma imagem para verificar se é real ou gerada por IA
         </p>
       </div>
@@ -100,54 +127,52 @@ export default function DashboardPage() {
       <StatsCards />
 
       {/* Upload e Análise */}
-      <Card>
-        <h2 className="text-xl font-semibold text-neutral-900 mb-6">
+      <div className="space-y-6">
+        <h2 className="text-xl font-semibold text-neutral-900">
           Enviar imagem para análise
         </h2>
 
-        <div className="space-y-6">
+        {/* Upload e Análise - Só exibe se não houver resultado */}
+        {!result && (
           <UploadArea
             onFileSelect={handleFileSelect}
             selectedFile={selectedFile}
             onRemove={handleRemoveFile}
+            onAnalyze={handleAnalyze}
+            isAnalyzing={isAnalyzing}
             disabled={isAnalyzing}
           />
+        )}
 
-          {selectedFile && !result && (
-            <Button
-              onClick={handleAnalyze}
-              disabled={isAnalyzing}
-              isLoading={isAnalyzing}
-              className="w-full sm:w-auto"
-            >
-              {isAnalyzing
-                ? "Analisando padrões de gradiente..."
-                : "Analisar imagem"}
-            </Button>
-          )}
+        {/* Loading State */}
+        {isAnalyzing && <ScanningLoading />}
 
-          {/* Visualizador 3D */}
-          {(() => {
-            let status: AnalysisStatus = "idle";
-            if (isAnalyzing) {
-              status = "analyzing";
-            } else if (result) {
-              status = result.label === "REAL" ? "real" : "synthetic";
-            }
-            return <AnalysisVisualizer3D status={status} />;
-          })()}
-
-          {result && <ResultCard result={result} />}
-        </div>
-      </Card>
+        {/* Resultado e Ação de Nova Análise */}
+        {result && (
+          <div className="space-y-6">
+            <div className="flex justify-end">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setResult(null);
+                  setSelectedFile(null);
+                }}
+              >
+                Nova Análise
+              </Button>
+            </div>
+            <ResultCard result={result} />
+          </div>
+        )}
+      </div>
 
       {/* Guia de Interpretação do Score */}
       <ScoreGuide />
 
       {/* Histórico Recente */}
       {analyses.length > 0 && (
-        <Card>
-          <div className="flex items-center justify-between mb-6">
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold text-neutral-900">
               Histórico recente de verificações
             </h2>
@@ -163,7 +188,7 @@ export default function DashboardPage() {
             analyses={recentAnalyses}
             onViewDetails={setSelectedAnalysis}
           />
-        </Card>
+        </div>
       )}
 
       {/* Modal de Detalhes */}

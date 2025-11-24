@@ -40,10 +40,10 @@ export const Modal: React.FC<ModalProps> = ({
   if (!isOpen) return null;
 
   const sizeClasses = {
-    sm: "max-w-md",
-    md: "max-w-2xl",
-    lg: "max-w-5xl",
-    xl: "max-w-6xl",
+    sm: "max-w-sm sm:max-w-md",
+    md: "max-w-lg sm:max-w-2xl",
+    lg: "max-w-3xl sm:max-w-5xl",
+    xl: "max-w-4xl sm:max-w-6xl",
   };
 
   return (
@@ -71,18 +71,18 @@ export const Modal: React.FC<ModalProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         {title && (
-          <div className="flex items-center justify-between p-6 border-b border-neutral-200">
-            <h2 className="text-xl font-semibold text-neutral-900">{title}</h2>
+          <div className="flex items-center justify-between p-4 sm:p-6 border-b border-neutral-200">
+            <h2 className="text-lg sm:text-xl font-semibold text-neutral-900 pr-2">{title}</h2>
             <button
               onClick={onClose}
-              className="text-neutral-400 hover:text-neutral-600 transition-colors"
+              className="text-neutral-400 hover:text-neutral-600 transition-colors flex-shrink-0"
               aria-label="Fechar"
             >
-              <X size={24} />
+              <X size={20} className="sm:w-6 sm:h-6" />
             </button>
           </div>
         )}
-        <div className="p-6">{children}</div>
+        <div className="p-4 sm:p-6">{children}</div>
       </div>
     </div>
   );
