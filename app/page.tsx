@@ -9,6 +9,9 @@ import {
   Check,
   Users,
   AlertCircle,
+  Building2,
+  Newspaper,
+  ShoppingBag,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -26,9 +29,9 @@ export default function HomePage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-2">
-              <div className="relative w-40 h-12">
+              <div className="relative w-80 h-24">
                 <Image
-                  src="/logo-full.png"
+                  src="/logo-full-transparent.png"
                   alt="ProvaReal Logo"
                   fill
                   className="object-contain"
@@ -49,12 +52,12 @@ export default function HomePage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-neutral-900 mb-6">
-              Saiba em segundos se uma imagem é{" "}
+              Descubra em segundos se uma imagem é{" "}
               <span className="text-primary-700">real ou gerada por IA</span>
             </h1>
             <p className="text-xl text-neutral-600 mb-8">
-              Ferramenta brasileira de verificação de imagens para proteger
-              você, sua audiência e suas eleições contra desinformação.
+              Proteja-se contra deepfakes e manipulações visuais. Nossa
+              inteligência artificial analisa padrões invisíveis ao olho humano.
             </p>
 
             {/* Input de upload */}
@@ -69,7 +72,7 @@ export default function HomePage() {
                   size="lg"
                   className="text-lg px-8 py-4 w-full sm:w-auto"
                 >
-                  Criar conta
+                  Criar conta grátis
                 </Button>
               </Link>
             </div>
@@ -92,8 +95,8 @@ export default function HomePage() {
                 1. Envie a imagem
               </h3>
               <p className="text-neutral-600">
-                Envie a imagem que você recebeu ou pretende publicar. Formatos
-                suportados: JPG, PNG, GIF, WEBP
+                Arraste ou selecione qualquer imagem que você deseja verificar.
+                Suportamos JPG, PNG, GIF e WEBP.
               </p>
             </Card>
 
@@ -102,11 +105,11 @@ export default function HomePage() {
                 <BarChart3 className="text-primary-700" size={32} />
               </div>
               <h3 className="text-xl font-semibold text-neutral-900 mb-2">
-                2. Análise de padrões invisíveis
+                2. Análise inteligente
               </h3>
               <p className="text-neutral-600">
-                Analisamos padrões invisíveis de gradiente, ruído e textura,
-                típicos de imagens reais ou geradas por IA.
+                Nossa IA examina milhares de padrões de pixels, texturas e
+                metadados para detectar sinais de geração artificial.
               </p>
             </Card>
 
@@ -115,11 +118,11 @@ export default function HomePage() {
                 <Shield className="text-primary-700" size={32} />
               </div>
               <h3 className="text-xl font-semibold text-neutral-900 mb-2">
-                3. Parecer claro e objetivo
+                3. Resultado claro
               </h3>
               <p className="text-neutral-600">
-                Você recebe um parecer claro com score de confiança e uma
-                explicação em linguagem simples.
+                Receba um score de confiança e uma explicação detalhada sobre a
+                autenticidade da imagem em linguagem simples.
               </p>
             </Card>
           </div>
@@ -139,7 +142,7 @@ export default function HomePage() {
                 price: "R$ 0,00",
                 quota: "10 análises/mês",
                 features: [
-                  "Perfeito para uso pessoal e testes",
+                  "Perfeito para uso pessoal",
                   "10 análises mensais",
                   "Detecção básica",
                   "Histórico dos últimos 30 dias",
@@ -152,7 +155,7 @@ export default function HomePage() {
                 price: "R$ 29,90",
                 quota: "200 análises/mês",
                 features: [
-                  "Para criadores, jornalistas e equipes pequenas",
+                  "Para profissionais e equipes",
                   "200 análises por mês",
                   "Detecção avançada com mais precisão",
                   "Histórico ilimitado",
@@ -166,10 +169,10 @@ export default function HomePage() {
                 price: "R$ 99,90",
                 quota: "Ilimitado",
                 features: [
-                  "Para redações, campanhas e operações críticas",
+                  "Para empresas e operações críticas",
                   "Análises ilimitadas",
                   "Detecção em tempo real",
-                  "Relatórios detalhados para auditoria",
+                  "Relatórios detalhados",
                   "Gerente de conta dedicado",
                   "SLA garantido",
                 ],
@@ -238,44 +241,44 @@ export default function HomePage() {
             <Card>
               <Users className="text-primary-700 mb-3" size={32} />
               <h3 className="text-lg font-semibold text-neutral-900 mb-2">
+                Uso Pessoal
+              </h3>
+              <p className="text-sm text-neutral-600">
+                Verifique imagens recebidas em redes sociais e grupos de
+                mensagens antes de compartilhar.
+              </p>
+            </Card>
+
+            <Card>
+              <Newspaper className="text-primary-700 mb-3" size={32} />
+              <h3 className="text-lg font-semibold text-neutral-900 mb-2">
                 Jornalistas
               </h3>
               <p className="text-sm text-neutral-600">
-                Verifique imagens antes de publicar matérias e evite cair em
-                golpes visuais.
+                Garanta a autenticidade de imagens antes de publicar matérias e
+                reportagens.
               </p>
             </Card>
 
             <Card>
-              <Shield className="text-primary-700 mb-3" size={32} />
+              <Building2 className="text-primary-700 mb-3" size={32} />
               <h3 className="text-lg font-semibold text-neutral-900 mb-2">
-                Campanhas Eleitorais
+                Empresas
               </h3>
               <p className="text-sm text-neutral-600">
-                Identifique conteúdos sintéticos usados contra sua candidatura e
-                se proteja de ataques desleais.
+                Proteja sua marca contra fraudes visuais e deepfakes em
+                comunicações corporativas.
               </p>
             </Card>
 
             <Card>
-              <Shield className="text-primary-700 mb-3" size={32} />
+              <ShoppingBag className="text-primary-700 mb-3" size={32} />
               <h3 className="text-lg font-semibold text-neutral-900 mb-2">
-                Órgãos Públicos
+                E-commerce
               </h3>
               <p className="text-sm text-neutral-600">
-                Monitore peças de comunicação e combata desinformação com uma
-                ferramenta de verificação confiável.
-              </p>
-            </Card>
-
-            <Card>
-              <Users className="text-primary-700 mb-3" size={32} />
-              <h3 className="text-lg font-semibold text-neutral-900 mb-2">
-                Cidadãos
-              </h3>
-              <p className="text-sm text-neutral-600">
-                Verifique imagens compartilhadas nas redes sociais antes de
-                compartilhar e evite espalhar desinformação.
+                Valide imagens de produtos e evite fraudes em marketplaces e
+                lojas online.
               </p>
             </Card>
           </div>
@@ -288,14 +291,14 @@ export default function HomePage() {
           <div className="max-w-3xl mx-auto text-center">
             <AlertCircle className="mx-auto mb-6" size={48} />
             <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-              Por que isso importa nas eleições?
+              Por que isso importa?
             </h2>
             <p className="text-lg text-primary-100 leading-relaxed mb-8">
-              A desinformação através de imagens sintéticas é uma ameaça real à
-              democracia. O ProvaReal oferece uma ferramenta confiável para
-              jornalistas, campanhas e cidadãos verificarem a autenticidade de
-              imagens, garantindo transparência e combate à manipulação
-              eleitoral.
+              Vivemos na era da desinformação visual. Deepfakes e imagens
+              geradas por IA estão cada vez mais realistas e difíceis de
+              identificar. O ProvaReal oferece uma ferramenta confiável para
+              verificar a autenticidade de imagens, ajudando você a tomar
+              decisões informadas e combater a manipulação.
             </p>
             <Link href="/auth/register">
               <Button
@@ -315,38 +318,39 @@ export default function HomePage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-8">
             <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="flex items-center gap-2 mb-4 md:mb-0">
-                  <div className="relative w-16 h-16">
-                    <Image
-                      src="/logo-icon-transparent.png"
-                      alt="ProvaReal"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                  <span className="font-bold text-xl text-white">
-                    ProvaReal
-                  </span>
+              <div className="flex items-center mb-4">
+                <div className="relative w-40 h-12">
+                  <Image
+                    src="/logo-full-transparent.png"
+                    alt="ProvaReal"
+                    fill
+                    className="object-contain brightness-0 invert"
+                  />
                 </div>
               </div>
               <p className="text-sm">
-                Plataforma brasileira de verificação de imagens para combate à
-                desinformação.
+                Plataforma brasileira de verificação de imagens com inteligência
+                artificial. Proteja-se contra deepfakes e manipulações visuais.
               </p>
             </div>
             <div>
               <h4 className="text-white font-semibold mb-4">Links</h4>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <Link
+                    href="/termos"
+                    className="hover:text-white transition-colors"
+                  >
                     Termos de Uso
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <Link
+                    href="/termos#privacidade"
+                    className="hover:text-white transition-colors"
+                  >
                     Política de Privacidade
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -354,7 +358,10 @@ export default function HomePage() {
               <h4 className="text-white font-semibold mb-4">Contato</h4>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
+                  <a
+                    href="mailto:contato@provareal.com.br"
+                    className="hover:text-white transition-colors"
+                  >
                     contato@provareal.com.br
                   </a>
                 </li>
@@ -362,7 +369,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="border-t border-neutral-800 pt-8 text-center text-sm">
-            <p>© 2024 ProvaReal. Todos os direitos reservados.</p>
+            <p>© 2025 ProvaReal. Todos os direitos reservados.</p>
           </div>
         </div>
       </footer>

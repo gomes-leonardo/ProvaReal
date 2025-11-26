@@ -73,11 +73,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = true, onClose }) => {
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
       >
-        <div className="flex items-center justify-center px-6 py-8 border-b border-neutral-200">
-          {/* Logo Icon - Visible on all screens now as per request */}
-          <div className="relative w-24 h-24">
+        <div className="flex items-center justify-center px-6 py-6 border-b border-neutral-200">
+          {/* Logo com escrita */}
+          <div className="relative w-80 h-24">
             <Image
-              src="/logo-icon-transparent.png"
+              src="/logo-full-transparent.png"
               alt="ProvaReal Logo"
               fill
               className="object-contain"

@@ -84,45 +84,83 @@ export const UploadArea: React.FC<UploadAreaProps> = ({
 
   if (selectedFile) {
     return (
-      <div className="relative w-full h-64 rounded-xl overflow-hidden border-2 border-dashed border-neutral-300 group">
-        {/* Background Image */}
-        <div className="absolute inset-0 w-full h-full">
-          <Image src={previewUrl} alt="Preview" fill className="object-cover" />
-          {/* Overlay gradient for better contrast if needed */}
-          <div className="absolute inset-0 bg-black/10" />
-        </div>
-
-        {/* Remove Button */}
-        <button
-          onClick={onRemove}
-          disabled={disabled || isAnalyzing}
-          className="absolute top-4 right-4 p-2 bg-white/80 hover:bg-white text-neutral-600 hover:text-red-600 rounded-full shadow-sm transition-all z-10 backdrop-blur-sm"
-          aria-label="Remover imagem"
-        >
-          <X size={20} />
-        </button>
-
-        {/* Analyze Button Overlay */}
-        {onAnalyze && (
-          <div className="absolute inset-0 flex items-center justify-center z-10">
+      <div className="bg-white rounded-2xl shadow-lg border border-neutral-200 p-6">
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Image Preview */}
+          <div className="relative flex-1 min-h-[300px] lg:min-h-[400px] rounded-xl overflow-hidden bg-neutral-100 shadow-inner">
+            <Image
+              src={previewUrl}
+              alt="Preview"
+              fill
+              className="object-contain p-2"
+            />
+            {/* Remove Button */}
             <button
-              onClick={onAnalyze}
+              onClick={onRemove}
               disabled={disabled || isAnalyzing}
-              className={cn(
-                "relative group overflow-hidden rounded-xl bg-gradient-to-b from-blue-500 to-blue-600 px-8 py-4 shadow-[0_4px_0_rgb(29,78,216),0_8px_16px_rgba(0,0,0,0.2)] transition-all active:shadow-none active:translate-y-1 disabled:opacity-70 disabled:cursor-not-allowed hover:brightness-110",
-                "border-t border-blue-400"
-              )}
+              className="absolute top-3 right-3 p-2.5 bg-white hover:bg-red-50 text-neutral-500 hover:text-red-600 rounded-full shadow-md transition-all z-10 border border-neutral-200 hover:border-red-200"
+              aria-label="Remover imagem"
             >
-              <div className="flex items-center space-x-3 text-white font-bold text-xl tracking-wide uppercase drop-shadow-md">
-                <span>{isAnalyzing ? "Analisando..." : "Analisar Imagem"}</span>
-                {!isAnalyzing && <Search size={24} strokeWidth={3} />}
-              </div>
-
-              {/* Glossy effect */}
-              <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-50 pointer-events-none" />
+              <X size={18} />
             </button>
           </div>
-        )}
+
+          {/* Info and Action Panel */}
+          <div className="lg:w-72 flex flex-col justify-between gap-4">
+            {/* File Info */}
+            <div className="space-y-4">
+              <div className="bg-neutral-50 rounded-xl p-4 border border-neutral-100">
+                <p className="text-xs text-neutral-500 uppercase tracking-wide font-medium mb-1">
+                  Arquivo selecionado
+                </p>
+                <p
+                  className="text-sm font-semibold text-neutral-800 truncate"
+                  title={selectedFile.name}
+                >
+                  {selectedFile.name}
+                </p>
+                <p className="text-xs text-neutral-500 mt-1">
+                  {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                </p>
+              </div>
+
+              <div className="bg-blue-50 rounded-xl p-4 border border-blue-100">
+                <p className="text-sm text-blue-800 font-medium mb-1">
+                  Pronto para análise
+                </p>
+                <p className="text-xs text-blue-600">
+                  Nossa IA irá verificar se esta imagem foi gerada
+                  artificialmente ou é uma foto real.
+                </p>
+              </div>
+            </div>
+
+            {/* Analyze Button */}
+            {onAnalyze && (
+              <button
+                onClick={onAnalyze}
+                disabled={disabled || isAnalyzing}
+                className={cn(
+                  "w-full relative overflow-hidden rounded-xl py-5 px-6 font-bold text-lg transition-all",
+                  "bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500",
+                  "shadow-[0_6px_20px_rgba(59,130,246,0.4)]",
+                  "hover:shadow-[0_8px_30px_rgba(59,130,246,0.5)] hover:scale-[1.02]",
+                  "active:scale-[0.98] active:shadow-[0_4px_15px_rgba(59,130,246,0.4)]",
+                  "disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
+                )}
+              >
+                <div className="flex items-center justify-center gap-3 text-white">
+                  <Search size={22} strokeWidth={2.5} />
+                  <span>
+                    {isAnalyzing ? "Analisando..." : "Analisar Imagem"}
+                  </span>
+                </div>
+                {/* Shine effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full hover:translate-x-full transition-transform duration-700" />
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     );
   }

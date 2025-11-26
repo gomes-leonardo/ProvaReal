@@ -9,7 +9,8 @@ export const metadata: Metadata = {
   description:
     "Verifique se uma imagem é real ou gerada por IA em segundos. Plataforma brasileira de combate à desinformação.",
   icons: {
-    icon: "/logo-icon-transparent.png",
+    icon: "/icon.svg",
+    apple: "/logo-icon-transparent.png",
   },
 };
 
