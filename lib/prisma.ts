@@ -1,15 +1,6 @@
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "./generated/prisma/client";
-import { ServiceError } from "@/infra/error";
-import { error } from "console";
-
-if (!process.env.DATABASE_URL) {
-  throw new ServiceError({
-    message: "Erro na conexão com o Banco ou na Query.",
-    cause: error,
-  });
-}
 
 const connectionString = process.env.DATABASE_URL;
 
