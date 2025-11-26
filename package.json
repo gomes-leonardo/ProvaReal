@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "npm run services:up && npm run services:wait:database && next dev",
+    "dev": "npm run services:up && npm run services:wait:database && dotenv -e .env.development -- prisma generate && next dev",
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
@@ -11,9 +11,10 @@
     "lint:prettier:fix": "prettier --write .",
     "lint:eslint:check": "eslint .",
     "lint:eslint:fix": "eslint --fix .",
-    "test": "start-server-and-test dev http://localhost:3000 'jest --runInBand'",
+    "test": "start-server-and-test dev:quiet http://localhost:3000 'jest --runInBand'",
     "test:watch": "jest --watchAll --runInBand --verbose",
     "test:coverage": "jest --coverage",
+    "dev:quiet": "npm run services:up && npm run services:wait:database && dotenv -e .env.development -- prisma generate && next dev > /dev/null 2>&1",
     "services:up": "docker compose -f infra/compose.yaml up -d",
     "services:down": "docker compose -f infra/compose.yaml down",
     "services:logs": "docker compose -f infra/compose.yaml logs -f",
@@ -52,10 +53,12 @@
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.0",
     "cz-conventional-changelog": "^3.3.0",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^8.56.0",
     "eslint-config-next": "^14.2.0",
     "husky": "^9.1.7",
     "jest": "^30.2.0",
+    "lint-staged": "^16.2.7",
     "postcss": "^8.4.0",
     "prettier": "^3.2.0",
     "start-server-and-test": "^2.1.3",
@@ -67,5 +70,17 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{json,css,md}": [
+      "prettier --write"
+    ]
+  },
+  "engines": {
+    "node": ">=20.19.0"
   }
 }

@@ -123,7 +123,10 @@ export default function ProfilePage() {
         confirmPassword: "",
       }));
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Erro ao atualizar perfil. Tente novamente.";
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Erro ao atualizar perfil. Tente novamente.";
       setError(errorMessage);
     } finally {
       setIsSaving(false);
@@ -138,7 +141,10 @@ export default function ProfilePage() {
       await deleteAccount();
       router.push("/");
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Erro ao deletar conta. Tente novamente.";
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Erro ao deletar conta. Tente novamente.";
       setError(errorMessage);
       setIsDeleting(false);
     }
@@ -155,7 +161,10 @@ export default function ProfilePage() {
       setSuccess("Plano atualizado com sucesso!");
       setShowPlanModal(false);
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Erro ao atualizar plano. Tente novamente.";
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Erro ao atualizar plano. Tente novamente.";
       setError(errorMessage);
     } finally {
       setIsUpdatingPlan(false);
@@ -172,7 +181,10 @@ export default function ProfilePage() {
       setSuccess("Inscrição cancelada. Você voltou para o plano FREE.");
       setShowCancelModal(false);
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Erro ao cancelar inscrição. Tente novamente.";
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Erro ao cancelar inscrição. Tente novamente.";
       setError(errorMessage);
       setIsCanceling(false);
     }
@@ -192,7 +204,9 @@ export default function ProfilePage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 mb-2">Meu Perfil</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 mb-2">
+          Meu Perfil
+        </h1>
         <p className="text-sm sm:text-base text-neutral-600">
           Gerencie suas informações pessoais e configurações da conta
         </p>
@@ -226,7 +240,8 @@ export default function ProfilePage() {
                   className="bg-primary-600 h-2 rounded-full transition-all"
                   style={{
                     width: `${Math.min(
-                      ((user.monthlyUsage || 0) / (user.plan?.monthlyQuota || 1)) *
+                      ((user.monthlyUsage || 0) /
+                        (user.plan?.monthlyQuota || 1)) *
                         100,
                       100
                     )}%`,
@@ -249,11 +264,18 @@ export default function ProfilePage() {
               <h2 className="text-lg sm:text-xl font-semibold text-neutral-900 truncate">
                 {user.name}
               </h2>
-              <p className="text-xs sm:text-sm text-neutral-600 truncate">{user.email}</p>
+              <p className="text-xs sm:text-sm text-neutral-600 truncate">
+                {user.email}
+              </p>
             </div>
           </div>
           {!isEditing && (
-            <Button onClick={() => setIsEditing(true)} variant="outline" size="sm" className="w-full sm:w-auto">
+            <Button
+              onClick={() => setIsEditing(true)}
+              variant="outline"
+              size="sm"
+              className="w-full sm:w-auto"
+            >
               Editar Perfil
             </Button>
           )}
@@ -522,7 +544,8 @@ export default function ProfilePage() {
             {/* FREE - Neutro */}
             {AVAILABLE_PLANS.filter((p) => p.id === "free").map((plan) => {
               const isCurrentPlan = user?.plan?.id === plan.id;
-              const isDowngrade = user?.plan?.id !== "free" && plan.id === "free";
+              const isDowngrade =
+                user?.plan?.id !== "free" && plan.id === "free";
 
               return (
                 <div
@@ -562,7 +585,9 @@ export default function ProfilePage() {
                         size={16}
                         className="text-neutral-400 mr-2 flex-shrink-0 mt-0.5"
                       />
-                      <span>Limite de {plan.monthlyQuota} análises por mês</span>
+                      <span>
+                        Limite de {plan.monthlyQuota} análises por mês
+                      </span>
                     </li>
                     <li className="flex items-start">
                       <Check
@@ -573,7 +598,8 @@ export default function ProfilePage() {
                     </li>
                   </ul>
                   <p className="text-xs text-neutral-500 mb-4 italic">
-                    Perfeito para começar a usar o ProvaReal antes de evoluir para o Pro.
+                    Perfeito para começar a usar o ProvaReal antes de evoluir
+                    para o Pro.
                   </p>
                   {isCurrentPlan ? (
                     <Button
@@ -645,7 +671,9 @@ export default function ProfilePage() {
                         size={16}
                         className="text-primary-600 mr-2 flex-shrink-0 mt-0.5"
                       />
-                      <span>Para criadores, jornalistas e equipes pequenas</span>
+                      <span>
+                        Para criadores, jornalistas e equipes pequenas
+                      </span>
                     </li>
                     <li className="flex items-start">
                       <Check

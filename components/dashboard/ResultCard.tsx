@@ -61,7 +61,9 @@ export const ResultCard: React.FC<ResultCardProps> = ({ result }) => {
         <div className="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
           <Icon className={cn(color, "flex-shrink-0")} size={24} />
           <div className="min-w-0 flex-1">
-            <h3 className={cn("text-xl sm:text-2xl font-bold", color)}>{label}</h3>
+            <h3 className={cn("text-xl sm:text-2xl font-bold", color)}>
+              {label}
+            </h3>
             <p className="text-xs sm:text-sm text-neutral-500 mt-1">
               Análise realizada em {formatDate(result.createdAt)}
             </p>
