@@ -87,12 +87,7 @@ export const UploadArea: React.FC<UploadAreaProps> = ({
       <div className="relative w-full h-64 rounded-xl overflow-hidden border-2 border-dashed border-neutral-300 group">
         {/* Background Image */}
         <div className="absolute inset-0 w-full h-full">
-          <Image
-            src={previewUrl}
-            alt="Preview"
-            fill
-            className="object-cover"
-          />
+          <Image src={previewUrl} alt="Preview" fill className="object-cover" />
           {/* Overlay gradient for better contrast if needed */}
           <div className="absolute inset-0 bg-black/10" />
         </div>
@@ -122,7 +117,7 @@ export const UploadArea: React.FC<UploadAreaProps> = ({
                 <span>{isAnalyzing ? "Analisando..." : "Analisar Imagem"}</span>
                 {!isAnalyzing && <Search size={24} strokeWidth={3} />}
               </div>
-              
+
               {/* Glossy effect */}
               <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-50 pointer-events-none" />
             </button>

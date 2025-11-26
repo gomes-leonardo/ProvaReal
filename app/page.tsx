@@ -53,10 +53,10 @@ export default function HomePage() {
               <span className="text-primary-700">real ou gerada por IA</span>
             </h1>
             <p className="text-xl text-neutral-600 mb-8">
-              Ferramenta brasileira de verificação de imagens para proteger você,
-              sua audiência e suas eleições contra desinformação.
+              Ferramenta brasileira de verificação de imagens para proteger
+              você, sua audiência e suas eleições contra desinformação.
             </p>
-            
+
             {/* Input de upload */}
             <div className="mb-8">
               <LandingUpload />
@@ -325,7 +325,9 @@ export default function HomePage() {
                       className="object-contain"
                     />
                   </div>
-                  <span className="font-bold text-xl text-white">ProvaReal</span>
+                  <span className="font-bold text-xl text-white">
+                    ProvaReal
+                  </span>
                 </div>
               </div>
               <p className="text-sm">

@@ -1,8 +1,8 @@
-import { Pool } from 'pg';
-import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient } from './generated/prisma/client';
-import { ServiceError } from '@/infra/error';
-import { error } from 'console';
+import { Pool } from "pg";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "./generated/prisma/client";
+import { ServiceError } from "@/infra/error";
+import { error } from "console";
 
 if (!process.env.DATABASE_URL) {
   throw new ServiceError({
@@ -15,7 +15,7 @@ const connectionString = process.env.DATABASE_URL;
 
 const pool = new Pool({
   connectionString,
-  ssl: process.env.NODE_ENV === 'production' ? true : undefined,
+  ssl: process.env.NODE_ENV === "production" ? true : undefined,
 });
 const adapter = new PrismaPg(pool);
 
@@ -32,4 +32,4 @@ const prisma = globalThis.prisma ?? prismaClientSingleton();
 
 export default prisma;
 
-if (process.env.NODE_ENV !== 'production') globalThis.prisma = prisma;
+if (process.env.NODE_ENV !== "production") globalThis.prisma = prisma;

@@ -28,7 +28,9 @@ export const HistoryTable: React.FC<HistoryTableProps> = ({
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {analyses.map((analysis) => {
         const isReal = analysis.label === "REAL";
-        const scoreColor = isReal ? "text-green-600 bg-green-50 border-green-200" : "text-red-600 bg-red-50 border-red-200";
+        const scoreColor = isReal
+          ? "text-green-600 bg-green-50 border-green-200"
+          : "text-red-600 bg-red-50 border-red-200";
 
         return (
           <div
@@ -50,9 +52,11 @@ export const HistoryTable: React.FC<HistoryTableProps> = ({
                   <span className="text-neutral-400 text-xs">Sem imagem</span>
                 </div>
               )}
-              
+
               {/* Score Badge */}
-              <div className={`absolute bottom-2 right-2 px-2 py-1 rounded-md text-xs font-bold border ${scoreColor}`}>
+              <div
+                className={`absolute bottom-2 right-2 px-2 py-1 rounded-md text-xs font-bold border ${scoreColor}`}
+              >
                 {formatPercentage(analysis.score)}
               </div>
             </div>
@@ -60,14 +64,23 @@ export const HistoryTable: React.FC<HistoryTableProps> = ({
             {/* Content */}
             <div className="p-4">
               <div className="flex items-start justify-between mb-2">
-                <h4 className="font-medium text-neutral-900 truncate flex-1" title={analysis.filename}>
+                <h4
+                  className="font-medium text-neutral-900 truncate flex-1"
+                  title={analysis.filename}
+                >
                   {analysis.filename}
                 </h4>
               </div>
-              
+
               <div className="flex items-center justify-between text-xs text-neutral-500">
                 <span>{formatDate(analysis.createdAt)}</span>
-                <span className={isReal ? "text-green-600 font-medium" : "text-red-600 font-medium"}>
+                <span
+                  className={
+                    isReal
+                      ? "text-green-600 font-medium"
+                      : "text-red-600 font-medium"
+                  }
+                >
                   {isReal ? "Real" : "Sintética"}
                 </span>
               </div>

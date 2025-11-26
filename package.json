@@ -52,10 +52,12 @@
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.0",
     "cz-conventional-changelog": "^3.3.0",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^8.56.0",
     "eslint-config-next": "^14.2.0",
     "husky": "^9.1.7",
     "jest": "^30.2.0",
+    "lint-staged": "^16.2.7",
     "postcss": "^8.4.0",
     "prettier": "^3.2.0",
     "start-server-and-test": "^2.1.3",
@@ -67,6 +69,15 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{json,css,md}": [
+      "prettier --write"
+    ]
   },
   "engines": {
     "node": ">=20.19.0"

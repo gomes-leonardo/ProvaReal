@@ -21,7 +21,13 @@ import { useEffect, useState } from "react";
  * Permite upload de imagens, análise e visualização de histórico
  */
 export default function DashboardPage() {
-  const { analyses, addAnalysis, setAnalyses, selectedImageForAnalysis, setSelectedImageForAnalysis } = useAnalysisStore();
+  const {
+    analyses,
+    addAnalysis,
+    setAnalyses,
+    selectedImageForAnalysis,
+    setSelectedImageForAnalysis,
+  } = useAnalysisStore();
   const { refreshUser } = useAuthStore();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -97,7 +103,9 @@ export default function DashboardPage() {
     } catch (error: unknown) {
       console.error("Erro ao analisar imagem:", error);
       const errorMessage =
-        error instanceof Error ? error.message : "Erro ao analisar imagem. Tente novamente.";
+        error instanceof Error
+          ? error.message
+          : "Erro ao analisar imagem. Tente novamente.";
       alert(errorMessage);
     } finally {
       setIsAnalyzing(false);

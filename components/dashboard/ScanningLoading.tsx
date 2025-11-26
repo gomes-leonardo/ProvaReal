@@ -5,10 +5,12 @@ export function ScanningLoading() {
   return (
     <div className="w-full h-64 bg-neutral-900 rounded-lg overflow-hidden relative flex flex-col items-center justify-center border border-neutral-800">
       {/* Grid Background */}
-      <div className="absolute inset-0 opacity-20"
+      <div
+        className="absolute inset-0 opacity-20"
         style={{
-          backgroundImage: "linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)",
-          backgroundSize: "20px 20px"
+          backgroundImage:
+            "linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)",
+          backgroundSize: "20px 20px",
         }}
       />
 
@@ -38,10 +40,20 @@ export function ScanningLoading() {
 
       <style jsx>{`
         @keyframes scan {
-          0% { top: 0%; opacity: 0; }
-          10% { opacity: 1; }
-          90% { opacity: 1; }
-          100% { top: 100%; opacity: 0; }
+          0% {
+            top: 0%;
+            opacity: 0;
+          }
+          10% {
+            opacity: 1;
+          }
+          90% {
+            opacity: 1;
+          }
+          100% {
+            top: 100%;
+            opacity: 0;
+          }
         }
         .animate-scan {
           position: absolute;

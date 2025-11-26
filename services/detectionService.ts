@@ -48,7 +48,7 @@ export async function getAnalysisHistory(params?: {
     try {
       const state = useAnalysisStore.getState();
       storeAnalyses = state.analyses || [];
-    } catch (e) {
+    } catch (_e) {
       // Ignorar erro se store não estiver disponível
     }
   }
@@ -87,7 +87,7 @@ export async function getAnalysisHistory(params?: {
 /**
  * Gerar explicação baseada no score
  */
-function getExplanation(score: number, label: string): string {
+function getExplanation(score: number, _label: string): string {
   if (score >= 70) {
     return "A imagem apresenta características típicas de imagens reais capturadas por câmeras. Alta probabilidade de autenticidade.";
   } else if (score >= 40) {

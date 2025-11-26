@@ -47,7 +47,10 @@ export default function RegisterPage() {
       });
       router.push("/dashboard");
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Erro ao criar conta. Tente novamente.";
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Erro ao criar conta. Tente novamente.";
       setError(errorMessage);
     } finally {
       setIsLoading(false);
