@@ -195,7 +195,10 @@ export default function ProfilePage() {
   if (!user) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <p className="text-neutral-600">Carregando...</p>
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-neutral-600">Carregando perfil...</p>
+        </div>
       </div>
     );
   }
@@ -203,13 +206,21 @@ export default function ProfilePage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 mb-2">
-          Meu Perfil
-        </h1>
-        <p className="text-sm sm:text-base text-neutral-600">
-          Gerencie suas informações pessoais e configurações da conta
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 mb-1">
+            Meu Perfil
+          </h1>
+          <p className="text-sm sm:text-base text-neutral-600">
+            Gerencie suas informações e configurações da conta
+          </p>
+        </div>
+        {success && (
+          <div className="flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 rounded-lg border border-green-200 text-sm">
+            <Check size={16} />
+            {success}
+          </div>
+        )}
       </div>
 
       {/* Plano Atual e Uso */}

@@ -13,7 +13,7 @@ import { analyzeImage, getAnalysisHistory } from "@/services/detectionService";
 import { useAnalysisStore } from "@/store/useAnalysisStore";
 import { useAuthStore } from "@/store/useAuthStore";
 import { AnalysisResult } from "@/lib/types";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ImageIcon, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 
 /**
@@ -28,20 +28,24 @@ export default function DashboardPage() {
     selectedImageForAnalysis,
     setSelectedImageForAnalysis,
   } = useAnalysisStore();
-  const { refreshUser } = useAuthStore();
+  const { refreshUser, user } = useAuthStore();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [selectedAnalysis, setSelectedAnalysis] =
     useState<AnalysisResult | null>(null);
   const [hasAutoAnalyzed, setHasAutoAnalyzed] = useState(false);
+  const [isLoadingHistory, setIsLoadingHistory] = useState(true);
 
   const loadHistory = async () => {
+    setIsLoadingHistory(true);
     try {
       const history = await getAnalysisHistory({ page: 1, pageSize: 5 });
       setAnalyses(history.analyses);
     } catch (error) {
       console.error("Erro ao carregar histórico:", error);
+    } finally {
+      setIsLoadingHistory(false);
     }
   };
 
@@ -121,14 +125,28 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8 pb-12">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 mb-2">
-          Análise de Imagens
-        </h1>
-        <p className="text-sm sm:text-base text-neutral-600">
-          Envie uma imagem para verificar se é real ou gerada por IA
-        </p>
+      {/* Header com saudação */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 mb-1">
+            {user?.name
+              ? `Olá, ${user.name.split(" ")[0]}!`
+              : "Análise de Imagens"}
+          </h1>
+          <p className="text-sm sm:text-base text-neutral-600">
+            Envie uma imagem para verificar se é real ou gerada por IA
+          </p>
+        </div>
+        {user?.plan && (
+          <div className="flex items-center gap-2 px-4 py-2 bg-primary-50 rounded-xl border border-primary-100">
+            <Sparkles size={16} className="text-primary-600" />
+            <span className="text-sm font-medium text-primary-700">
+              {user.monthlyUsage || 0} /{" "}
+              {user.plan.monthlyQuota === -1 ? "∞" : user.plan.monthlyQuota}{" "}
+              análises
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Cards de Estatísticas */}
@@ -136,12 +154,26 @@ export default function DashboardPage() {
 
       {/* Upload e Análise */}
       <div className="space-y-6">
-        <h2 className="text-xl font-semibold text-neutral-900">
-          Enviar imagem para análise
-        </h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold text-neutral-900">
+            {result ? "Resultado da análise" : "Enviar imagem para análise"}
+          </h2>
+          {result && (
+            <Button
+              variant="primary"
+              onClick={() => {
+                setResult(null);
+                setSelectedFile(null);
+              }}
+            >
+              <ImageIcon size={18} className="mr-2" />
+              Nova Análise
+            </Button>
+          )}
+        </div>
 
         {/* Upload e Análise - Só exibe se não houver resultado */}
-        {!result && (
+        {!result && !isAnalyzing && (
           <UploadArea
             onFileSelect={handleFileSelect}
             selectedFile={selectedFile}
@@ -155,49 +187,73 @@ export default function DashboardPage() {
         {/* Loading State */}
         {isAnalyzing && <ScanningLoading />}
 
-        {/* Resultado e Ação de Nova Análise */}
-        {result && (
-          <div className="space-y-6">
-            <div className="flex justify-end">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setResult(null);
-                  setSelectedFile(null);
-                }}
-              >
-                Nova Análise
-              </Button>
-            </div>
-            <ResultCard result={result} />
-          </div>
-        )}
+        {/* Resultado */}
+        {result && <ResultCard result={result} />}
       </div>
 
       {/* Guia de Interpretação do Score */}
       <ScoreGuide />
 
       {/* Histórico Recente */}
-      {analyses.length > 0 && (
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-neutral-900">
-              Histórico recente de verificações
-            </h2>
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold text-neutral-900">
+            Histórico recente
+          </h2>
+          {analyses.length > 0 && (
             <Link href="/dashboard/history">
               <Button variant="ghost" size="sm">
                 Ver tudo
                 <ArrowRight size={16} className="ml-2" />
               </Button>
             </Link>
-          </div>
+          )}
+        </div>
 
+        {isLoadingHistory ? (
+          // Loading skeleton
+          <div className="bg-white rounded-xl border border-neutral-200 p-6">
+            <div className="space-y-4">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="flex items-center gap-4 animate-pulse">
+                  <div className="w-12 h-12 bg-neutral-200 rounded-lg" />
+                  <div className="flex-1 space-y-2">
+                    <div className="h-4 bg-neutral-200 rounded w-1/3" />
+                    <div className="h-3 bg-neutral-100 rounded w-1/4" />
+                  </div>
+                  <div className="h-6 w-20 bg-neutral-200 rounded-full" />
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : analyses.length === 0 ? (
+          // Estado vazio
+          <div className="bg-white rounded-xl border border-neutral-200 p-12 text-center">
+            <div className="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <ImageIcon size={32} className="text-neutral-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-neutral-900 mb-2">
+              Nenhuma análise ainda
+            </h3>
+            <p className="text-neutral-600 mb-6 max-w-sm mx-auto">
+              Envie sua primeira imagem para verificar se é real ou gerada por
+              IA. O resultado aparecerá aqui.
+            </p>
+            <Button
+              variant="outline"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
+              <ImageIcon size={18} className="mr-2" />
+              Fazer primeira análise
+            </Button>
+          </div>
+        ) : (
           <HistoryTable
             analyses={recentAnalyses}
             onViewDetails={setSelectedAnalysis}
           />
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Modal de Detalhes */}
       {selectedAnalysis && (
