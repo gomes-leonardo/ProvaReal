@@ -19,6 +19,13 @@ const customJestConfig = {
     "/.next/",
     "/__tests__/",
   ],
+  watchPathIgnorePatterns: [
+    "/node_modules/",
+    "/.next/",
+    "/.git/",
+    "/coverage/",
+    "/infra/",
+  ],
   collectCoverageFrom: [
     "app/**/*.{js,jsx,ts,tsx}",
     "lib/**/*.{js,jsx,ts,tsx}",
