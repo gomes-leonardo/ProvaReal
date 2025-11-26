@@ -2,7 +2,6 @@ import React from "react";
 import Image from "next/image";
 import { AnalysisResult } from "@/lib/types";
 import { formatDate, formatPercentage } from "@/lib/utils";
-import { AlertTriangle } from "lucide-react";
 
 interface HistoryTableProps {
   analyses: AnalysisResult[];

@@ -87,6 +87,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({ result }) => {
           </div>
           <div className="border border-neutral-200 rounded-lg overflow-hidden bg-neutral-50 shadow-sm">
             <div className="relative w-full flex items-center justify-center min-h-[200px] sm:min-h-[300px] max-h-[70vh] p-4 sm:p-6">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={result.imageUrl}
                 alt={`Imagem analisada: ${result.filename}`}
